@@ -1,6 +1,7 @@
 package lk.ijse.itemservice.controller;
 
 import lk.ijse.itemservice.dto.ItemDTO;
+import lk.ijse.itemservice.dto.UserDTO;
 import lk.ijse.itemservice.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,12 @@ public class ItemController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")
-    ItemDTO saveItem(@RequestBody ItemDTO itemDTO) {
-        return itemService.saveItem(itemDTO);
+    public String saveItem(@RequestBody ItemDTO itemDTO, UserDTO userDTO) {
+
+        restTemplate.postForObject("http://localhost:8086/userService/users", userDTO, UserDTO.class);
+        itemService.saveItem(itemDTO);
+
+        return "Success";
 
     }
 
